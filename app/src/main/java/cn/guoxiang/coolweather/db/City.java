@@ -3,9 +3,8 @@ package cn.guoxiang.coolweather.db;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by guoxiang on 2017/6/13.
+ * Created by guoxiang on 2017/6/17.
  */
-
 public class City extends DataSupport {
     //每个实体类都有的id
     private int id;
