@@ -2,6 +2,8 @@ package cn.guoxiang.coolweather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,12 +11,24 @@ import org.json.JSONObject;
 import cn.guoxiang.coolweather.db.City;
 import cn.guoxiang.coolweather.db.County;
 import cn.guoxiang.coolweather.db.Province;
+import cn.guoxiang.coolweather.gson.Weather;
 
 /**
  * Created by guoxiang on 2017/6/14.
  */
 
 public class Utility {
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject weatherObject = new JSONObject(response);
+            JSONArray weatherArray = weatherObject.getJSONArray("HeWeather");
+            String weatherContent = weatherArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static boolean handleProvinceResponse(String response){
         if(!TextUtils.isEmpty(response)){
             try {
