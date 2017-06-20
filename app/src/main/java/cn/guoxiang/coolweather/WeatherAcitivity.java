@@ -1,5 +1,6 @@
 package cn.guoxiang.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -28,6 +29,7 @@ import java.io.IOException;
 
 import cn.guoxiang.coolweather.gson.Forecast;
 import cn.guoxiang.coolweather.gson.Weather;
+import cn.guoxiang.coolweather.service.AutoUpateService;
 import cn.guoxiang.coolweather.util.HttpUtil;
 import cn.guoxiang.coolweather.util.Utility;
 import okhttp3.Call;
@@ -51,6 +53,7 @@ public class WeatherAcitivity extends AppCompatActivity {
     private ImageView bingPicImg;
     private SharedPreferences prefs;
     public SwipeRefreshLayout swipeRefresh;
+    private int mWeatherId;
 
 
     @Override
@@ -129,6 +132,7 @@ public class WeatherAcitivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 requestWeather(weatherId);
             }
         });
@@ -163,6 +167,8 @@ public class WeatherAcitivity extends AppCompatActivity {
                             editor.putString("weather", responseText);
                             editor.apply();
                             showWeatherInfo(weather);
+                            Intent intent = new Intent(WeatherAcitivity.this, AutoUpateService.class);
+                            startService(intent);
                         }else {
                             Toast.makeText(WeatherAcitivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
